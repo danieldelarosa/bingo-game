@@ -39,6 +39,14 @@
             window.firebaseGet = get;
             window.firebaseOnValue = onValue;
             window.firebaseRemove = remove;
+            window.firebaseLoaded = true;
+
+            // Inicializar el juego una vez que Firebase esté listo
+            document.addEventListener("DOMContentLoaded", function () {
+                if (window.firebaseLoaded) {
+                    initBingo();
+                }
+            });
         </script>
 
         <style>
@@ -454,13 +462,23 @@
             let selectedNumberForRegistration = null;
 
             // Funciones para manejo de Firebase
-            function saveParticipants() {
-                const participantsRef = window.firebaseRef(
+            function saveParticipant(participant) {
+                if (!window.firebaseDB) {
+                    console.warn("Firebase no disponible");
+                    alert("Error: No hay conexión a la base de datos.");
+                    return;
+                }
+
+                console.log("Guardando participante:", participant);
+                const participantRef = window.firebaseRef(
                     window.firebaseDB,
-                    "bingo/participants",
+                    `bingo/participants/${participant.number}`,
                 );
                 window
-                    .firebaseSet(participantsRef, participants)
+                    .firebaseSet(participantRef, participant)
+                    .then(() => {
+                        console.log("Participante guardado exitosamente");
+                    })
                     .catch((error) => {
                         console.error("Error guardando en Firebase:", error);
                         alert(
@@ -470,6 +488,11 @@
             }
 
             function loadParticipants() {
+                if (!window.firebaseDB) {
+                    console.warn("Firebase no disponible");
+                    return;
+                }
+
                 const participantsRef = window.firebaseRef(
                     window.firebaseDB,
                     "bingo/participants",
@@ -478,7 +501,13 @@
                 // Escuchar cambios en tiempo real
                 window.firebaseOnValue(participantsRef, (snapshot) => {
                     const data = snapshot.val();
-                    participants = data ? data : [];
+                    console.log("Datos recibidos de Firebase:", data);
+                    if (data) {
+                        // Convertir objeto a array
+                        participants = Object.values(data);
+                    } else {
+                        participants = [];
+                    }
                     updateUI();
                 });
             }
@@ -486,7 +515,10 @@
             function updateUI() {
                 const grid = document.getElementById("bingoGrid");
 
-                // Limpiar grid
+                // Solo actualizar si el grid existe
+                if (!grid) return;
+
+                // Limpiar grid y restaurar números disponibles
                 for (let i = 1; i <= 50; i++) {
                     const cell = document.querySelector(`[data-number="${i}"]`);
                     if (cell) {
@@ -541,7 +573,20 @@
                 const cell = document.querySelector(
                     `[data-number="${number}"]`,
                 );
+
+                // Verificar si ya está ocupado en el DOM
                 if (cell.classList.contains("taken")) {
+                    alert(
+                        "¡Este número ya está ocupado! Por favor selecciona otro.",
+                    );
+                    return;
+                }
+
+                // Verificar si ya está ocupado en los datos locales
+                const isNumberTaken = participants.some(
+                    (p) => p.number === number,
+                );
+                if (isNumberTaken) {
                     alert(
                         "¡Este número ya está ocupado! Por favor selecciona otro.",
                     );
@@ -563,6 +608,7 @@
                 document.getElementById("registrationModal").style.display =
                     "none";
                 document.getElementById("registrationForm").reset();
+                selectedNumberForRegistration = null;
             }
 
             document.getElementById("registrationForm").onsubmit = function (
@@ -570,8 +616,23 @@
             ) {
                 e.preventDefault();
 
-                const name = document.getElementById("participantName").value;
-                const phone = document.getElementById("participantPhone").value;
+                const name = document
+                    .getElementById("participantName")
+                    .value.trim();
+                const phone = document
+                    .getElementById("participantPhone")
+                    .value.trim();
+
+                // Validaciones
+                if (!name) {
+                    alert("Por favor ingresa tu nombre.");
+                    return;
+                }
+
+                if (!phone) {
+                    alert("Por favor ingresa tu teléfono.");
+                    return;
+                }
 
                 // Validar teléfono colombiano
                 const phoneRegex = /^[0-9]{10}$/;
@@ -579,6 +640,18 @@
                     alert(
                         "Por favor ingresa un número de celular válido (10 dígitos).",
                     );
+                    return;
+                }
+
+                // Verificar una vez más que el número sigue disponible
+                const isStillAvailable = !participants.some(
+                    (p) => p.number === selectedNumberForRegistration,
+                );
+                if (!isStillAvailable) {
+                    alert(
+                        "¡Lo siento! Este número acaba de ser seleccionado por otro usuario. Por favor selecciona otro número.",
+                    );
+                    closeModal();
                     return;
                 }
 
@@ -591,21 +664,9 @@
                     timestamp: new Date().toLocaleString(),
                 };
 
-                participants.push(participant);
+                // Guardar en Firebase individualmente
+                saveParticipant(participant);
 
-                // Guardar en Firebase
-                saveParticipants();
-
-                // Marcar número como ocupado
-                const cell = document.querySelector(
-                    `[data-number="${selectedNumberForRegistration}"]`,
-                );
-                cell.classList.remove("available");
-                cell.classList.add("taken");
-                cell.innerHTML = `${selectedNumberForRegistration}<br><small style="font-size: 0.7em;">${name}</small>`;
-
-                updateParticipantsList();
-                updateStats();
                 closeModal();
 
                 alert(
@@ -657,7 +718,6 @@
                         "¿Estás seguro de que quieres resetear el bingo? Se perderán todos los participantes registrados para TODOS los usuarios.",
                     )
                 ) {
-                    participants = [];
                     const participantsRef = window.firebaseRef(
                         window.firebaseDB,
                         "bingo/participants",
@@ -686,8 +746,15 @@
                 }
             };
 
-            // Inicializar el juego
-            initBingo();
+            // Inicializar el juego solo si Firebase no está disponible (fallback)
+            document.addEventListener("DOMContentLoaded", function () {
+                if (!window.firebaseLoaded) {
+                    console.warn(
+                        "Firebase no está disponible, iniciando en modo local",
+                    );
+                    initBingo();
+                }
+            });
         </script>
     </body>
 </html>

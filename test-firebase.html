@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Test Firebase - Bingo</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 20px;
+                background-color: #f5f5f5;
+            }
+            .container {
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .status {
+                padding: 15px;
+                margin: 10px 0;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+            .success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+            .warning {
+                background-color: #fff3cd;
+                color: #856404;
+                border: 1px solid #ffeaa7;
+            }
+            button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 5px;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            .test-section {
+                margin: 20px 0;
+                padding: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+            #log {
+                background-color: #f8f9fa;
+                border: 1px solid #dee2e6;
+                border-radius: 5px;
+                padding: 15px;
+                max-height: 300px;
+                overflow-y: auto;
+                font-family: monospace;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🔥 Test de Configuración Firebase</h1>
+            <p>
+                Esta página te ayudará a verificar si Firebase está configurado
+                correctamente.
+            </p>
+
+            <div class="test-section">
+                <h3>1. Estado de Firebase</h3>
+                <div id="firebase-status" class="status warning">
+                    Verificando...
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h3>2. Pruebas de Conexión</h3>
+                <button onclick="testWrite()">🔴 Probar Escritura</button>
+                <button onclick="testRead()">🔵 Probar Lectura</button>
+                <button onclick="testDelete()">
+                    🗑️ Limpiar Datos de Prueba
+                </button>
+                <div id="connection-status" class="status warning">
+                    Esperando pruebas...
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h3>3. Datos Actuales en Firebase</h3>
+                <button onclick="showCurrentData()">
+                    📊 Mostrar Datos del Bingo
+                </button>
+                <div id="current-data"></div>
+            </div>
+
+            <div class="test-section">
+                <h3>4. Log de Actividad</h3>
+                <div id="log"></div>
+                <button onclick="clearLog()">🧹 Limpiar Log</button>
+            </div>
+        </div>
+
+        <!-- Firebase SDK -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+            import {
+                getDatabase,
+                ref,
+                set,
+                get,
+                onValue,
+                remove,
+            } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+            // Configuración de Firebase (REEMPLAZA CON TUS DATOS)
+            const firebaseConfig = {
+                apiKey: "AIzaSyCUvPrvvilavqv-JMWPDFFvxBU3uuGQX84",
+                authDomain: "bingo-game-ab117.firebaseapp.com",
+                databaseURL:
+                    "https://bingo-game-ab117-default-rtdb.firebaseio.com",
+                projectId: "bingo-game-ab117",
+                storageBucket: "bingo-game-ab117.firebasestorage.app",
+                messagingSenderId: "866584904558",
+                appId: "1:866584904558:web:7241bfced821a92f43377f",
+            };
+
+            let app, database;
+
+            function log(message) {
+                const logDiv = document.getElementById("log");
+                const timestamp = new Date().toLocaleTimeString();
+                logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+                logDiv.scrollTop = logDiv.scrollHeight;
+                console.log(message);
+            }
+
+            try {
+                // Inicializar Firebase
+                app = initializeApp(firebaseConfig);
+                database = getDatabase(app);
+
+                document.getElementById("firebase-status").innerHTML =
+                    "✅ Firebase inicializado correctamente";
+                document.getElementById("firebase-status").className =
+                    "status success";
+
+                log("✅ Firebase inicializado correctamente");
+
+                // Hacer funciones disponibles globalmente
+                window.testWrite = function () {
+                    log("🔴 Iniciando prueba de escritura...");
+                    const testRef = ref(database, "test/connection");
+                    const testData = {
+                        timestamp: new Date().toISOString(),
+                        message: "Test de conexión exitoso",
+                        random: Math.random(),
+                    };
+
+                    set(testRef, testData)
+                        .then(() => {
+                            log("✅ Escritura exitosa");
+                            document.getElementById(
+                                "connection-status",
+                            ).innerHTML =
+                                "✅ Escritura funcionando correctamente";
+                            document.getElementById(
+                                "connection-status",
+                            ).className = "status success";
+                        })
+                        .catch((error) => {
+                            log("❌ Error en escritura: " + error.message);
+                            document.getElementById(
+                                "connection-status",
+                            ).innerHTML =
+                                "❌ Error en escritura: " + error.message;
+                            document.getElementById(
+                                "connection-status",
+                            ).className = "status error";
+                        });
+                };
+
+                window.testRead = function () {
+                    log("🔵 Iniciando prueba de lectura...");
+                    const testRef = ref(database, "test/connection");
+
+                    get(testRef)
+                        .then((snapshot) => {
+                            if (snapshot.exists()) {
+                                const data = snapshot.val();
+                                log(
+                                    "✅ Lectura exitosa: " +
+                                        JSON.stringify(data),
+                                );
+                                document.getElementById(
+                                    "connection-status",
+                                ).innerHTML =
+                                    "✅ Lectura funcionando correctamente";
+                                document.getElementById(
+                                    "connection-status",
+                                ).className = "status success";
+                            } else {
+                                log(
+                                    '⚠️ No hay datos de prueba. Ejecuta primero "Probar Escritura"',
+                                );
+                                document.getElementById(
+                                    "connection-status",
+                                ).innerHTML = "⚠️ No hay datos para leer";
+                                document.getElementById(
+                                    "connection-status",
+                                ).className = "status warning";
+                            }
+                        })
+                        .catch((error) => {
+                            log("❌ Error en lectura: " + error.message);
+                            document.getElementById(
+                                "connection-status",
+                            ).innerHTML =
+                                "❌ Error en lectura: " + error.message;
+                            document.getElementById(
+                                "connection-status",
+                            ).className = "status error";
+                        });
+                };
+
+                window.testDelete = function () {
+                    log("🗑️ Eliminando datos de prueba...");
+                    const testRef = ref(database, "test");
+
+                    remove(testRef)
+                        .then(() => {
+                            log("✅ Datos de prueba eliminados");
+                            alert("Datos de prueba eliminados correctamente");
+                        })
+                        .catch((error) => {
+                            log("❌ Error eliminando: " + error.message);
+                            alert("Error eliminando datos: " + error.message);
+                        });
+                };
+
+                window.showCurrentData = function () {
+                    log("📊 Obteniendo datos actuales del bingo...");
+                    const bingoRef = ref(database, "bingo/participants");
+
+                    get(bingoRef)
+                        .then((snapshot) => {
+                            const dataDiv =
+                                document.getElementById("current-data");
+                            if (snapshot.exists()) {
+                                const data = snapshot.val();
+                                const participants = Object.values(data);
+
+                                let html = `<div class="status success">
+                                <strong>Participantes encontrados: ${participants.length}</strong><br><br>`;
+
+                                participants.forEach((participant, index) => {
+                                    html += `
+                                    <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                                        <strong>Número ${participant.number}</strong> - ${participant.name}<br>
+                                        📱 ${participant.phone} | ${participant.probability === "normal" ? "🎯 Normal" : "⭐ Premium"}<br>
+                                        <small>Registrado: ${participant.timestamp}</small>
+                                    </div>
+                                `;
+                                });
+
+                                html += "</div>";
+                                dataDiv.innerHTML = html;
+                                log(
+                                    `✅ ${participants.length} participantes encontrados`,
+                                );
+                            } else {
+                                dataDiv.innerHTML =
+                                    '<div class="status warning">No hay participantes registrados aún</div>';
+                                log("⚠️ No hay participantes registrados");
+                            }
+                        })
+                        .catch((error) => {
+                            document.getElementById("current-data").innerHTML =
+                                `<div class="status error">Error: ${error.message}</div>`;
+                            log("❌ Error obteniendo datos: " + error.message);
+                        });
+                };
+
+                window.clearLog = function () {
+                    document.getElementById("log").innerHTML = "";
+                };
+
+                // Test automático al cargar
+                log("🚀 Página de pruebas cargada");
+                log("💡 Haz clic en los botones para probar la conexión");
+            } catch (error) {
+                document.getElementById("firebase-status").innerHTML =
+                    "❌ Error inicializando Firebase: " + error.message;
+                document.getElementById("firebase-status").className =
+                    "status error";
+                log("❌ Error crítico: " + error.message);
+
+                // Mostrar mensaje de ayuda
+                document.getElementById("connection-status").innerHTML = `
+                <strong>❌ Firebase no configurado</strong><br><br>
+                Para solucionar este problema:<br>
+                1. Ve a <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a><br>
+                2. Crea un proyecto y activa Realtime Database<br>
+                3. Obtén tu configuración de Firebase<br>
+                4. Reemplaza los valores "TU_*" en este archivo<br>
+                5. Recarga la página
+            `;
+                document.getElementById("connection-status").className =
+                    "status error";
+            }
+        </script>
+    </body>
+</html>

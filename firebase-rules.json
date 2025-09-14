@@ -1,6 +1,6 @@
 {
   "rules": {
-    "bingo": {
+    "rifa": {
       "participants": {
         ".read": true,
         ".write": true,

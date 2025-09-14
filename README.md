@@ -1,10 +1,10 @@
-# Bingo Interactivo - Premio Morral con Cosmetiquera
+# Rifa Interactiva - Premio Morral con Cosmetiquera
 
-Un juego de bingo interactivo desarrollado en HTML, CSS y JavaScript puro con sincronización en tiempo real usando Firebase. Los participantes pueden seleccionar números del 1 al 50 con diferentes probabilidades de ganar un premio especial.
+Una rifa interactiva desarrollada en HTML, CSS y JavaScript puro con sincronización en tiempo real usando Firebase. Los participantes pueden seleccionar números del 1 al 50 para participar en el sorteo de un premio especial.
 
 ## ✨ Características principales
 
-- 🎯 **Tablero de bingo interactivo** con números del 1 al 50
+- 🎯 **Tablero de rifa interactivo** con números del 1 al 50
 - 🔥 **Sincronización en tiempo real** con Firebase - todos los usuarios ven los mismos números ocupados
 - 🎫 **Sistema de boletos único** - un solo tipo de boleto para todos los participantes
 - 👥 **Registro de participantes** compartido entre todos los usuarios
@@ -34,12 +34,12 @@ Un juego de bingo interactivo desarrollado en HTML, CSS y JavaScript puro con si
 - Hover effects y animaciones avanzadas
 - Modal compacto centrado
 
-## Cómo jugar
+## Cómo participar en la rifa
 
 1. Haz clic en un número disponible del tablero
 2. Registra tus datos (nombre y teléfono)
 3. ¡Tu número queda reservado y sincronizado con todos los demás usuarios!
-4. ¡Espera a ver si ganas el premio!
+4. ¡Espera al sorteo para ver si ganas el premio!
 
 ## Premio
 
@@ -109,8 +109,8 @@ https://tu-usuario.github.io/nombre-del-repo/
 ## 📁 Estructura del proyecto
 
 ```
-bingo-game/
-├── index.html                 # Archivo principal del juego con Firebase
+rifa-game/
+├── index.html                 # Archivo principal de la rifa con Firebase
 ├── test-firebase.html         # Página de pruebas para verificar Firebase
 ├── cosmetiquera.png          # Imagen del premio cosmetiquera
 ├── morral.png               # Imagen del premio morral
@@ -178,6 +178,7 @@ Puedes personalizar fácilmente:
 - Rangos de números (actualmente 1-50)
 - Estructura de datos en Firebase
 - Precio del boleto
+- Fecha y lotería del sorteo
 
 ## 🚨 Notas importantes
 
@@ -203,7 +204,7 @@ Puedes personalizar fácilmente:
 
 ¡Las contribuciones son bienvenidas! Áreas donde puedes ayudar:
 
-- **Nuevas características**: Sistema de chat, múltiples bingos, temas personalizados
+- **Nuevas características**: Sistema de chat, múltiples rifas, temas personalizados
 - **Mejoras de UX**: Nuevas animaciones, sonidos, notificaciones push  
 - **Optimizaciones**: Performance, accesibilidad, SEO
 - **Testing**: Pruebas automáticas, testing en dispositivos
@@ -233,7 +234,7 @@ Este proyecto está bajo la **Licencia MIT**. Siéntete libre de usarlo y modifi
 ---
 
 **¿Encontraste un bug o tienes una sugerencia?** 
-Abre un [issue](https://github.com/tu-usuario/bingo-game/issues) o contáctanos directamente.
+Abre un [issue](https://github.com/tu-usuario/rifa-game/issues) o contáctanos directamente.
 
 **¿Te gustó el proyecto?** 
 Dale una ⭐ en GitHub y compártelo con otros desarrolladores.

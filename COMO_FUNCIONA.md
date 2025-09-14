@@ -1,8 +1,8 @@
-# 🎯 Cómo Funciona el Bingo Interactivo
+# 🎯 Cómo Funciona la Rifa Interactiva
 
 ## 📋 Sistema Simplificado
 
-Este bingo utiliza un sistema **simplificado de un solo tipo de boleto** para hacer la experiencia más clara y directa.
+Esta rifa utiliza un sistema **simplificado de un solo tipo de boleto** para hacer la experiencia más clara y directa.
 
 ### 🎫 Un Solo Tipo de Boleto
 - **Precio único**: $10.000 COP por número
@@ -11,7 +11,7 @@ Este bingo utiliza un sistema **simplificado de un solo tipo de boleto** para ha
 
 ---
 
-## 🎮 Proceso del Juego
+## 🎮 Proceso de la Rifa
 
 ### 1. **Selección de Número**
 - Haz clic en cualquier número verde (disponible)
@@ -81,7 +81,7 @@ El panel muestra 3 métricas clave:
 
 ---
 
-## 🎯 Sorteo y Ganador
+## 🎯 Cómo se Determina el Ganador
 
 ### Proceso del Sorteo:
 1. **Fecha**: 2 de Octubre
@@ -97,7 +97,7 @@ El panel muestra 3 métricas clave:
 
 ## ⚙️ Funciones de Administración
 
-### 🗑️ Resetear Bingo
+### 🗑️ Resetear Rifa
 - **Solo administradores**
 - Borra todos los participantes
 - Limpia el tablero completamente
@@ -156,6 +156,7 @@ El panel muestra 3 métricas clave:
 - ✅ Verifica que el teléfono tenga 10 dígitos
 - ✅ Asegúrate de llenar todos los campos
 - ✅ Revisa tu conexión a Firebase
+- ✅ Asegúrate que el número no haya sido tomado por otro usuario
 
 ---
 

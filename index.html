@@ -44,7 +44,7 @@
             // Inicializar el juego una vez que Firebase esté listo
             document.addEventListener("DOMContentLoaded", function () {
                 if (window.firebaseLoaded) {
-                    initBingo();
+                    initRifa();
                 }
             });
         </script>
@@ -126,7 +126,7 @@
                 padding: 0 15px;
             }
 
-            .bingo-grid {
+            .rifa-grid {
                 display: grid;
                 grid-template-columns: repeat(10, 1fr);
                 gap: 6px;
@@ -387,14 +387,14 @@
                     height: 160px;
                 }
 
-                .bingo-grid {
+                .rifa-grid {
                     max-width: 100%;
                     padding: 10px;
                 }
             }
 
             @media (max-width: 768px) {
-                .bingo-grid {
+                .rifa-grid {
                     grid-template-columns: repeat(8, 1fr);
                     gap: 4px;
                     padding: 10px;
@@ -474,7 +474,7 @@
                     border-radius: 10px;
                 }
 
-                .bingo-grid {
+                .rifa-grid {
                     grid-template-columns: repeat(6, 1fr);
                     gap: 3px;
                     padding: 8px;
@@ -530,7 +530,7 @@
             }
 
             @media (max-width: 360px) {
-                .bingo-grid {
+                .rifa-grid {
                     grid-template-columns: repeat(5, 1fr);
                     gap: 2px;
                     padding: 6px;
@@ -648,11 +648,11 @@
             }
 
             /* Estilos para el estado loading del grid */
-            .bingo-grid.loading {
+            .rifa-grid.loading {
                 position: relative;
             }
 
-            .bingo-grid.loading .number-cell {
+            .rifa-grid.loading .number-cell {
                 opacity: 0.7;
                 pointer-events: none;
             }
@@ -661,7 +661,7 @@
     <body>
         <div class="container">
             <div class="header">
-                <h1>🎉 BINGO INTERACTIVO 🎉</h1>
+                <h1>🎉 RIFA INTERACTIVA 🎉</h1>
                 <p>¡Participa y gana increíbles premios!</p>
             </div>
 
@@ -738,10 +738,10 @@
             <div class="reset-section">
                 <button
                     class="btn btn-cancel"
-                    onclick="resetBingo()"
+                    onclick="resetRifa()"
                     style="background-color: #e74c3c"
                 >
-                    🗑️ Resetear Bingo
+                    🗑️ Resetear Rifa
                 </button>
             </div>
 
@@ -760,7 +760,7 @@
                 </div>
             </div>
 
-            <div class="bingo-grid" id="bingoGrid">
+            <div class="rifa-grid" id="rifaGrid">
                 <!-- Los números se generarán con JavaScript -->
             </div>
 
@@ -863,13 +863,13 @@
                 }
 
                 // Mostrar estado de carga
-                const grid = document.getElementById("bingoGrid");
+                const grid = document.getElementById("rifaGrid");
                 grid.classList.add("loading");
 
                 console.log("Guardando participante:", participant);
                 const participantRef = window.firebaseRef(
                     window.firebaseDB,
-                    `bingo/participants/${participant.number}`,
+                    `rifa/participants/${participant.number}`,
                 );
                 window
                     .firebaseSet(participantRef, participant)
@@ -907,7 +907,7 @@
 
                 const participantsRef = window.firebaseRef(
                     window.firebaseDB,
-                    "bingo/participants",
+                    "rifa/participants",
                 );
 
                 // Escuchar cambios en tiempo real
@@ -925,7 +925,7 @@
             }
 
             function updateUI() {
-                const grid = document.getElementById("bingoGrid");
+                const grid = document.getElementById("rifaGrid");
 
                 // Solo actualizar si el grid existe
                 if (!grid) return;
@@ -1021,9 +1021,9 @@
                 phoneInput.classList.remove("error", "success");
             }
 
-            // Inicializar el bingo
-            function initBingo() {
-                const grid = document.getElementById("bingoGrid");
+            // Inicializar la rifa
+            function initRifa() {
+                const grid = document.getElementById("rifaGrid");
                 grid.innerHTML = "";
 
                 for (let i = 1; i <= 50; i++) {
@@ -1243,27 +1243,27 @@
                     totalTickets;
             }
 
-            function resetBingo() {
+            function resetRifa() {
                 if (
                     confirm(
-                        "¿Estás seguro de que quieres resetear el bingo? Se perderán todos los participantes registrados para TODOS los usuarios.",
+                        "¿Estás seguro de que quieres resetear la rifa? Se perderán todos los participantes registrados para TODOS los usuarios.",
                     )
                 ) {
                     const participantsRef = window.firebaseRef(
                         window.firebaseDB,
-                        "bingo/participants",
+                        "rifa/participants",
                     );
                     window
                         .firebaseRemove(participantsRef)
                         .then(() => {
                             alert(
-                                "¡Bingo reseteado exitosamente para todos los usuarios!",
+                                "¡Rifa reseteada exitosamente para todos los usuarios!",
                             );
                         })
                         .catch((error) => {
                             console.error("Error reseteando Firebase:", error);
                             alert(
-                                "Error al resetear el bingo. Por favor intenta de nuevo.",
+                                "Error al resetear la rifa. Por favor intenta de nuevo.",
                             );
                         });
                 }
@@ -1283,7 +1283,7 @@
                     console.warn(
                         "Firebase no está disponible, iniciando en modo local",
                     );
-                    initBingo();
+                    initRifa();
                 }
             });
         </script>

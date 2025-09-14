@@ -1,10 +1,10 @@
-# 🔥 Guía de Configuración de Firebase para el Bingo
+# 🔥 Guía de Configuración de Firebase para la Rifa
 
 ## Paso 1: Crear proyecto en Firebase
 
 1. Ve a [Firebase Console](https://console.firebase.google.com/)
 2. Haz clic en "Agregar proyecto" o "Create a project"
-3. Nombre del proyecto: `bingo-game` (o el nombre que prefieras)
+3. Nombre del proyecto: `rifa-game` (o el nombre que prefieras)
 4. Acepta los términos y crea el proyecto
 
 ## Paso 2: Configurar Realtime Database
@@ -31,7 +31,7 @@
 2. Selecciona "Configuración del proyecto"
 3. Baja hasta "Tus aplicaciones"
 4. Haz clic en el ícono `</>` (Web)
-5. Nombre de la app: `bingo-web`
+5. Nombre de la app: `rifa-web`
 6. **NO marcar** "También configurar Firebase Hosting"
 7. Copia la configuración que aparece
 
@@ -55,10 +55,10 @@ const firebaseConfig = {
 ```javascript
 const firebaseConfig = {
     apiKey: "AIzaSyBxxx-xxxxxxxxxxxxxxxxxxxxxx",
-    authDomain: "bingo-game-12345.firebaseapp.com",
-    databaseURL: "https://bingo-game-12345-default-rtdb.firebaseio.com/",
-    projectId: "bingo-game-12345",
-    storageBucket: "bingo-game-12345.appspot.com",
+    authDomain: "rifa-game-12345.firebaseapp.com",
+    databaseURL: "https://rifa-game-12345-default-rtdb.firebaseio.com/",
+    projectId: "rifa-game-12345",
+    storageBucket: "rifa-game-12345.appspot.com",
     messagingSenderId: "123456789012",
     appId: "1:123456789012:web:abcdef123456"
 };
@@ -79,11 +79,11 @@ Una vez que confirmes que funciona, actualiza las reglas de Firebase:
 ```json
 {
   "rules": {
-    "bingo": {
+    "rifa": {
       "participants": {
         ".read": true,
         ".write": true,
-        ".validate": "newData.hasChildren(['number', 'name', 'phone', 'probability', 'timestamp'])"
+        ".validate": "newData.hasChildren(['number', 'name', 'phone', 'timestamp'])"
       }
     }
   }
@@ -117,7 +117,7 @@ Para ver los datos almacenados:
 - Firebase Realtime Database tiene un plan gratuito generoso
 - Hasta 1GB de almacenamiento
 - Hasta 10GB de transferencia de datos por mes
-- Para un bingo, esto es más que suficiente
+- Para una rifa, esto es más que suficiente
 
 ## ✅ Checklist final
 

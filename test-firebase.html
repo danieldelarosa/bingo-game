@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Test Firebase - Bingo</title>
+        <title>Test Firebase - Rifa</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -249,10 +249,10 @@
                 };
 
                 window.showCurrentData = function () {
-                    log("📊 Obteniendo datos actuales del bingo...");
-                    const bingoRef = ref(database, "bingo/participants");
+                    log("📊 Obteniendo datos actuales de la rifa...");
+                    const rifaRef = ref(database, "rifa/participants");
 
-                    get(bingoRef)
+                    get(rifaRef)
                         .then((snapshot) => {
                             const dataDiv =
                                 document.getElementById("current-data");

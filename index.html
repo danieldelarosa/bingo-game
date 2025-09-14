@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bingo Interactivo - Premio Morral con Cosmetiquera</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Arial", sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                padding: 20px;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+
+            .header {
+                background: linear-gradient(45deg, #ff6b6b, #feca57);
+                color: white;
+                text-align: center;
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            .prize-info {
+                background: #fff;
+                color: #333;
+                padding: 20px;
+                border-radius: 15px;
+                margin: 20px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .prize-images {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                margin: 20px 0;
+            }
+
+            .prize-image {
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+                border-radius: 15px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .lottery-info {
+                background: #e74c3c;
+                color: white;
+                text-align: center;
+                padding: 15px;
+                margin: 20px;
+                border-radius: 10px;
+                font-size: 1.2em;
+                font-weight: bold;
+            }
+
+            .probability-selector {
+                text-align: center;
+                margin: 20px;
+            }
+
+            .prob-btn {
+                background: linear-gradient(45deg, #3498db, #2980b9);
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                margin: 10px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 1.1em;
+                transition: all 0.3s ease;
+            }
+
+            .prob-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .prob-btn.active {
+                background: linear-gradient(45deg, #27ae60, #16a085);
+            }
+
+            .bingo-grid {
+                display: grid;
+                grid-template-columns: repeat(10, 1fr);
+                gap: 8px;
+                padding: 20px;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            .number-cell {
+                aspect-ratio: 1;
+                border: 2px solid #ddd;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2em;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            }
+
+            .number-cell:hover {
+                transform: scale(1.05);
+                border-color: #3498db;
+            }
+
+            .number-cell.taken {
+                background: linear-gradient(135deg, #e74c3c, #c0392b);
+                color: white;
+                cursor: not-allowed;
+            }
+
+            .number-cell.available {
+                background: linear-gradient(135deg, #27ae60, #16a085);
+                color: white;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .modal-content {
+                background-color: white;
+                margin: 10% auto;
+                padding: 30px;
+                border-radius: 15px;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #333;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 12px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                font-size: 1em;
+            }
+
+            .btn {
+                background: linear-gradient(45deg, #3498db, #2980b9);
+                color: white;
+                border: none;
+                padding: 12px 25px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1em;
+                margin: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn-cancel {
+                background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            }
+
+            .participants-list {
+                margin: 20px;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 10px;
+            }
+
+            .participant-item {
+                background: white;
+                padding: 10px;
+                margin: 5px 0;
+                border-radius: 5px;
+                border-left: 4px solid #3498db;
+            }
+
+            .stats {
+                display: flex;
+                justify-content: space-around;
+                background: #34495e;
+                color: white;
+                padding: 20px;
+            }
+
+            .stat-item {
+                text-align: center;
+            }
+
+            .stat-number {
+                font-size: 2em;
+                font-weight: bold;
+            }
+
+            @media (max-width: 768px) {
+                .bingo-grid {
+                    grid-template-columns: repeat(5, 1fr);
+                }
+                .header h1 {
+                    font-size: 2em;
+                }
+                .prize-images {
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🎉 BINGO INTERACTIVO 🎉</h1>
+                <p>¡Participa y gana increíbles premios!</p>
+            </div>
+
+            <div class="prize-info">
+                <h2
+                    style="
+                        text-align: center;
+                        color: #e74c3c;
+                        margin-bottom: 20px;
+                    "
+                >
+                    🏆 GRAN PREMIO 🏆
+                </h2>
+                <div class="prize-images">
+                    <div style="text-align: center">
+                        <h3>Morral Elegante</h3>
+                        <div
+                            style="
+                                width: 200px;
+                                height: 200px;
+                                background: linear-gradient(
+                                    135deg,
+                                    #8b4513,
+                                    #d2691e
+                                );
+                                border-radius: 15px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: white;
+                                font-size: 1.2em;
+                                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                            "
+                        >
+                            Morral con<br />Detalles Leopardo
+                        </div>
+                    </div>
+                    <div style="text-align: center">
+                        <h3>Cosmetiquera</h3>
+                        <div
+                            style="
+                                width: 200px;
+                                height: 200px;
+                                background: linear-gradient(
+                                    135deg,
+                                    #cd853f,
+                                    #f4a460
+                                );
+                                border-radius: 15px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: white;
+                                font-size: 1.2em;
+                                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                            "
+                        >
+                            Cosmetiquera<br />de Cuero
+                        </div>
+                    </div>
+                </div>
+                <h2
+                    style="text-align: center; color: #27ae60; margin-top: 20px"
+                >
+                    💰 Valor: $10.000 COP 💰
+                </h2>
+            </div>
+
+            <div class="lottery-info">
+                🗓️ FECHA: 2 de Octubre | 🎲 LOTERÍA SINUANO | 🌙 HORARIO:
+                Nocturno
+            </div>
+
+            <div class="probability-selector">
+                <h3>Selecciona tu modalidad de juego:</h3>
+                <button
+                    class="prob-btn active"
+                    onclick="setProbability('normal')"
+                >
+                    🎯 Probabilidad Normal (1 oportunidad por número)
+                </button>
+                <button class="prob-btn" onclick="setProbability('premium')">
+                    ⭐ Probabilidad Premium (2 oportunidades por número)
+                </button>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="availableNumbers">50</div>
+                    <div>Números Disponibles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalParticipants">0</div>
+                    <div>Participantes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalTickets">0</div>
+                    <div>Boletos Vendidos</div>
+                </div>
+            </div>
+
+            <div class="bingo-grid" id="bingoGrid">
+                <!-- Los números se generarán con JavaScript -->
+            </div>
+
+            <div class="participants-list">
+                <h3>👥 Lista de Participantes</h3>
+                <div id="participantsList">
+                    <p style="text-align: center; color: #7f8c8d">
+                        No hay participantes aún. ¡Sé el primero en participar!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para registro -->
+        <div id="registrationModal" class="modal">
+            <div class="modal-content">
+                <h3>
+                    📝 Registro para el Número <span id="selectedNumber"></span>
+                </h3>
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="participantName">Nombre Completo:</label>
+                        <input type="text" id="participantName" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="participantPhone">Número de Celular:</label>
+                        <input type="tel" id="participantPhone" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Modalidad Seleccionada:</label>
+                        <p
+                            id="selectedProbability"
+                            style="font-weight: bold; color: #3498db"
+                        ></p>
+                    </div>
+                    <div style="text-align: center">
+                        <button type="submit" class="btn">
+                            ✅ Confirmar Registro
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-cancel"
+                            onclick="closeModal()"
+                        >
+                            ❌ Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            let currentProbability = "normal";
+            let participants = [];
+            let selectedNumberForRegistration = null;
+
+            // Inicializar el bingo
+            function initBingo() {
+                const grid = document.getElementById("bingoGrid");
+                grid.innerHTML = "";
+
+                for (let i = 1; i <= 50; i++) {
+                    const cell = document.createElement("div");
+                    cell.className = "number-cell available";
+                    cell.textContent = i;
+                    cell.setAttribute("data-number", i);
+                    cell.onclick = () => selectNumber(i);
+                    grid.appendChild(cell);
+                }
+                updateStats();
+            }
+
+            function setProbability(prob) {
+                currentProbability = prob;
+                document.querySelectorAll(".prob-btn").forEach((btn) => {
+                    btn.classList.remove("active");
+                });
+                event.target.classList.add("active");
+            }
+
+            function selectNumber(number) {
+                const cell = document.querySelector(
+                    `[data-number="${number}"]`,
+                );
+                if (cell.classList.contains("taken")) {
+                    alert(
+                        "¡Este número ya está ocupado! Por favor selecciona otro.",
+                    );
+                    return;
+                }
+
+                selectedNumberForRegistration = number;
+                document.getElementById("selectedNumber").textContent = number;
+                document.getElementById("selectedProbability").textContent =
+                    currentProbability === "normal"
+                        ? "🎯 Probabilidad Normal (1 oportunidad)"
+                        : "⭐ Probabilidad Premium (2 oportunidades)";
+
+                document.getElementById("registrationModal").style.display =
+                    "block";
+            }
+
+            function closeModal() {
+                document.getElementById("registrationModal").style.display =
+                    "none";
+                document.getElementById("registrationForm").reset();
+            }
+
+            document.getElementById("registrationForm").onsubmit = function (
+                e,
+            ) {
+                e.preventDefault();
+
+                const name = document.getElementById("participantName").value;
+                const phone = document.getElementById("participantPhone").value;
+
+                // Validar teléfono colombiano
+                const phoneRegex = /^[0-9]{10}$/;
+                if (!phoneRegex.test(phone)) {
+                    alert(
+                        "Por favor ingresa un número de celular válido (10 dígitos).",
+                    );
+                    return;
+                }
+
+                // Registrar participante
+                const participant = {
+                    number: selectedNumberForRegistration,
+                    name: name,
+                    phone: phone,
+                    probability: currentProbability,
+                    timestamp: new Date().toLocaleString(),
+                };
+
+                participants.push(participant);
+
+                // Marcar número como ocupado
+                const cell = document.querySelector(
+                    `[data-number="${selectedNumberForRegistration}"]`,
+                );
+                cell.classList.remove("available");
+                cell.classList.add("taken");
+                cell.innerHTML = `${selectedNumberForRegistration}<br><small style="font-size: 0.7em;">${name}</small>`;
+
+                updateParticipantsList();
+                updateStats();
+                closeModal();
+
+                alert(
+                    `¡Registro exitoso! ${name}, has seleccionado el número ${selectedNumberForRegistration} con ${currentProbability === "normal" ? "1 oportunidad" : "2 oportunidades"}.`,
+                );
+            };
+
+            function updateParticipantsList() {
+                const list = document.getElementById("participantsList");
+
+                if (participants.length === 0) {
+                    list.innerHTML =
+                        '<p style="text-align: center; color: #7f8c8d;">No hay participantes aún. ¡Sé el primero en participar!</p>';
+                    return;
+                }
+
+                list.innerHTML = participants
+                    .sort((a, b) => a.number - b.number)
+                    .map(
+                        (p) => `
+                    <div class="participant-item">
+                        <strong>Número ${p.number}</strong> - ${p.name}<br>
+                        📱 ${p.phone} | ${p.probability === "normal" ? "🎯 Normal" : "⭐ Premium"}<br>
+                        <small>Registrado: ${p.timestamp}</small>
+                    </div>
+                `,
+                    )
+                    .join("");
+            }
+
+            function updateStats() {
+                const available = 50 - participants.length;
+                const totalTickets = participants.reduce(
+                    (sum, p) => sum + (p.probability === "premium" ? 2 : 1),
+                    0,
+                );
+
+                document.getElementById("availableNumbers").textContent =
+                    available;
+                document.getElementById("totalParticipants").textContent =
+                    participants.length;
+                document.getElementById("totalTickets").textContent =
+                    totalTickets;
+            }
+
+            // Cerrar modal al hacer clic fuera de él
+            window.onclick = function (event) {
+                const modal = document.getElementById("registrationModal");
+                if (event.target === modal) {
+                    closeModal();
+                }
+            };
+
+            // Inicializar el juego
+            initBingo();
+        </script>
+    </body>
+</html>
+<script>
+    // Update the prize images section to use actual images
+    document.addEventListener("DOMContentLoaded", function () {
+        const prizeImagesDiv = document.querySelector(".prize-images");
+        prizeImagesDiv.innerHTML = `
+            <div style="text-align: center;">
+                <h3>Morral Elegante con Detalles Leopardo</h3>
+                <img src="morral.png"
+                     alt="Morral con detalles leopardo"
+                     class="prize-image"
+                     style="width: 250px; height: 250px; object-fit: cover; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); border: 3px solid #D2691E;">
+            </div>
+            <div style="text-align: center;">
+                <h3>Cosmetiquera de Cuero</h3>
+                <img src="cosmetiquera.png"
+                     alt="Cosmetiquera de cuero"
+                     class="prize-image"
+                     style="width: 400px; height: 250px; object-fit: cover; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); border: 3px solid #CD853F;">
+            </div>
+        `;
+
+        // Remove normal probability option and set premium as default
+        const probabilitySelector = document.querySelector(
+            ".probability-selector",
+        );
+        probabilitySelector.innerHTML = `
+            <h3 style="color: #e74c3c;">🌟 Modalidad Exclusiva Premium 🌟</h3>
+            <div style="background: linear-gradient(45deg, #f39c12, #e67e22); color: white; padding: 20px; border-radius: 15px; margin: 20px 0; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <h4 style="margin: 0; font-size: 1.3em;">⭐ MODALIDAD PREMIUM ⭐</h4>
+                <p style="margin: 10px 0; font-size: 1.1em;">2 oportunidades de ganar por cada número</p>
+                <p style="margin: 0; font-size: 0.9em; opacity: 0.9;">¡Duplica tus posibilidades de llevarte el gran premio!</p>
+            </div>
+        `;
+        // Add deployment preparation
+        console.log("Bingo Interactivo - Ready for deployment");
+
+        // Ensure images load properly for deployment
+        const images = document.querySelectorAll("img");
+        images.forEach((img) => {
+            img.onerror = function () {
+                // Fallback to placeholder if images don't load
+                this.style.background = this.alt.includes("Morral")
+                    ? "linear-gradient(135deg, #8b4513, #d2691e)"
+                    : "linear-gradient(135deg, #cd853f, #f4a460)";
+                this.style.display = "flex";
+                this.style.alignItems = "center";
+                this.style.justifyContent = "center";
+                this.style.color = "white";
+                this.style.fontSize = "1em";
+                this.style.textAlign = "center";
+                this.innerHTML = this.alt;
+            };
+        });
+
+        // Set premium as the only mode
+        currentProbability = "premium";
+    });
+
+    // Override the setProbability function to always use premium
+    function setProbability(prob) {
+        currentProbability = "premium";
+    }
+</script>

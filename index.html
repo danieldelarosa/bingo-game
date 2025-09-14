@@ -57,10 +57,11 @@
             }
 
             body {
-                font-family: "Arial", sans-serif;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 min-height: 100vh;
-                padding: 20px;
+                color: #333;
+                line-height: 1.6;
             }
 
             .container {
@@ -68,12 +69,13 @@
                 margin: 0 auto;
                 background: white;
                 border-radius: 20px;
-                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
                 overflow: hidden;
+                margin: 10px;
             }
 
             .header {
-                background: linear-gradient(45deg, #ff6b6b, #feca57);
+                background: linear-gradient(135deg, #ff6b6b, #ee5a24);
                 color: white;
                 text-align: center;
                 padding: 30px 20px;
@@ -86,24 +88,22 @@
             }
 
             .prize-info {
-                background: #fff;
-                color: #333;
+                text-align: center;
                 padding: 20px;
-                border-radius: 15px;
-                margin: 20px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                background: #f8f9fa;
             }
 
             .prize-images {
                 display: flex;
                 justify-content: center;
-                gap: 20px;
-                margin: 20px 0;
+                gap: 15px;
+                margin: 15px 0;
+                flex-wrap: wrap;
             }
 
             .prize-image {
-                width: 200px;
-                height: 200px;
+                width: 180px;
+                height: 180px;
                 object-fit: cover;
                 border-radius: 15px;
                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -113,33 +113,47 @@
                 background: #e74c3c;
                 color: white;
                 text-align: center;
-                padding: 15px;
-                margin: 20px;
+                padding: 12px;
+                margin: 15px;
                 border-radius: 10px;
-                font-size: 1.2em;
+                font-size: 1em;
                 font-weight: bold;
             }
 
             .probability-selector {
                 text-align: center;
                 margin: 20px;
+                padding: 0 15px;
+            }
+
+            .probability-selector h3 {
+                margin-bottom: 15px;
+                color: #2c3e50;
+                font-size: 1.2em;
             }
 
             .prob-btn {
                 background: linear-gradient(45deg, #3498db, #2980b9);
                 color: white;
                 border: none;
-                padding: 15px 30px;
-                margin: 10px;
+                padding: 12px 20px;
+                margin: 8px;
                 border-radius: 25px;
                 cursor: pointer;
-                font-size: 1.1em;
+                font-size: 0.95em;
                 transition: all 0.3s ease;
+                display: inline-block;
+                min-height: 48px;
+                touch-action: manipulation;
             }
 
             .prob-btn:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .prob-btn:active {
+                transform: translateY(0);
             }
 
             .prob-btn.active {
@@ -149,40 +163,76 @@
             .bingo-grid {
                 display: grid;
                 grid-template-columns: repeat(10, 1fr);
-                gap: 8px;
-                padding: 20px;
-                max-width: 800px;
+                gap: 6px;
+                padding: 15px;
+                max-width: 900px;
                 margin: 0 auto;
+                background: #f8f9fa;
+                border-radius: 15px;
+                margin: 20px auto;
+                box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
             }
 
             .number-cell {
                 aspect-ratio: 1;
                 border: 2px solid #ddd;
-                border-radius: 10px;
+                border-radius: 8px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 1.2em;
+                font-size: 1em;
                 font-weight: bold;
                 cursor: pointer;
-                transition: all 0.3s ease;
+                transition: all 0.2s ease;
                 background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                position: relative;
+                min-height: 40px;
+                touch-action: manipulation;
+                user-select: none;
             }
 
             .number-cell:hover {
-                transform: scale(1.05);
+                transform: scale(1.08);
                 border-color: #3498db;
+                box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+                z-index: 2;
+            }
+
+            .number-cell:active {
+                transform: scale(1.02);
             }
 
             .number-cell.taken {
                 background: linear-gradient(135deg, #e74c3c, #c0392b);
                 color: white;
                 cursor: not-allowed;
+                opacity: 0.9;
+            }
+
+            .number-cell.taken:hover {
+                transform: none;
+                box-shadow: none;
             }
 
             .number-cell.available {
                 background: linear-gradient(135deg, #27ae60, #16a085);
                 color: white;
+                box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+            }
+
+            .number-cell small {
+                position: absolute;
+                bottom: 2px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 0.6em;
+                line-height: 1;
+                text-align: center;
+                width: 100%;
+                padding: 0 2px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             .modal {
@@ -193,28 +243,38 @@
                 top: 0;
                 width: 100%;
                 height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
+                background-color: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(2px);
             }
 
             .modal-content {
                 background-color: white;
-                margin: 10% auto;
-                padding: 30px;
+                margin: 5% auto;
+                padding: 25px;
                 border-radius: 15px;
-                width: 90%;
-                max-width: 500px;
+                width: 95%;
+                max-width: 450px;
                 box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .modal-content h3 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #2c3e50;
             }
 
             .form-group {
-                margin-bottom: 20px;
+                margin-bottom: 18px;
             }
 
             .form-group label {
                 display: block;
                 margin-bottom: 5px;
-                font-weight: bold;
-                color: #333;
+                font-weight: 600;
+                color: #2c3e50;
+                font-size: 0.95em;
             }
 
             .form-group input {
@@ -222,24 +282,76 @@
                 padding: 12px;
                 border: 2px solid #ddd;
                 border-radius: 8px;
-                font-size: 1em;
+                font-size: 16px;
+                transition: border-color 0.3s ease;
+                background: #fafafa;
+                box-sizing: border-box;
+            }
+
+            .form-group input:focus {
+                outline: none;
+                border-color: #3498db;
+                background: white;
+                box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            }
+
+            .form-group input.error {
+                border-color: #e74c3c;
+                background: #fdf2f2;
+            }
+
+            .form-group input.success {
+                border-color: #27ae60;
+                background: #f2f9f5;
+            }
+
+            .error-message {
+                color: #e74c3c;
+                font-size: 0.85em;
+                margin-top: 5px;
+                min-height: 1.2em;
+            }
+
+            .input-help {
+                color: #7f8c8d;
+                font-size: 0.8em;
+                margin-top: 3px;
+            }
+
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
             }
 
             .btn {
                 background: linear-gradient(45deg, #3498db, #2980b9);
                 color: white;
                 border: none;
-                padding: 12px 25px;
+                padding: 12px 20px;
                 border-radius: 8px;
                 cursor: pointer;
                 font-size: 1em;
                 margin: 5px;
                 transition: all 0.3s ease;
+                min-height: 48px;
+                touch-action: manipulation;
+                font-weight: 600;
             }
 
             .btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn:active {
+                transform: translateY(0);
             }
 
             .btn-cancel {
@@ -247,47 +359,360 @@
             }
 
             .participants-list {
-                margin: 20px;
-                padding: 20px;
+                margin: 15px;
+                padding: 15px;
                 background: #f8f9fa;
                 border-radius: 10px;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+
+            .participants-list h3 {
+                text-align: center;
+                margin-bottom: 15px;
+                color: #2c3e50;
             }
 
             .participant-item {
                 background: white;
-                padding: 10px;
-                margin: 5px 0;
-                border-radius: 5px;
+                padding: 12px;
+                margin: 8px 0;
+                border-radius: 8px;
                 border-left: 4px solid #3498db;
+                font-size: 0.9em;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             }
 
             .stats {
                 display: flex;
                 justify-content: space-around;
-                background: #34495e;
+                background: linear-gradient(135deg, #2c3e50, #34495e);
                 color: white;
                 padding: 20px;
+                flex-wrap: wrap;
+                gap: 10px;
             }
 
             .stat-item {
                 text-align: center;
+                flex: 1;
+                min-width: 100px;
             }
 
             .stat-number {
-                font-size: 2em;
+                font-size: 1.8em;
                 font-weight: bold;
+                margin-bottom: 5px;
+                display: block;
+            }
+
+            .stat-item div:last-child {
+                font-size: 0.9em;
+                opacity: 0.9;
+            }
+
+            /* Responsive Design */
+            @media (max-width: 1024px) {
+                .container {
+                    margin: 5px;
+                    border-radius: 15px;
+                }
+
+                .prize-image {
+                    width: 160px;
+                    height: 160px;
+                }
+
+                .bingo-grid {
+                    max-width: 100%;
+                    padding: 10px;
+                }
             }
 
             @media (max-width: 768px) {
                 .bingo-grid {
-                    grid-template-columns: repeat(5, 1fr);
+                    grid-template-columns: repeat(8, 1fr);
+                    gap: 4px;
+                    padding: 10px;
+                    margin: 15px 10px;
                 }
+
+                .number-cell {
+                    font-size: 0.9em;
+                    min-height: 35px;
+                    border-width: 1px;
+                }
+
+                .number-cell small {
+                    font-size: 0.55em;
+                }
+
+                .header {
+                    padding: 20px 15px;
+                }
+
                 .header h1 {
                     font-size: 2em;
                 }
+
                 .prize-images {
                     flex-direction: column;
                     align-items: center;
+                    gap: 10px;
+                }
+
+                .prize-image {
+                    width: 140px;
+                    height: 140px;
+                }
+
+                .lottery-info {
+                    margin: 10px;
+                    padding: 10px;
+                    font-size: 0.9em;
+                }
+
+                .probability-selector {
+                    margin: 15px 10px;
+                }
+
+                .prob-btn {
+                    display: block;
+                    width: 100%;
+                    margin: 10px 0;
+                    padding: 15px;
+                    font-size: 1em;
+                }
+
+                .stats {
+                    padding: 15px 10px;
+                    gap: 15px;
+                }
+
+                .stat-number {
+                    font-size: 1.5em;
+                }
+
+                .modal-content {
+                    margin: 10% auto;
+                    padding: 20px;
+                    width: 98%;
+                }
+
+                .participants-list {
+                    margin: 10px;
+                    padding: 10px;
+                    max-height: 300px;
+                }
+
+                .participant-item {
+                    padding: 10px;
+                    font-size: 0.85em;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .container {
+                    margin: 2px;
+                    border-radius: 10px;
+                }
+
+                .bingo-grid {
+                    grid-template-columns: repeat(6, 1fr);
+                    gap: 3px;
+                    padding: 8px;
+                    margin: 10px 5px;
+                }
+
+                .number-cell {
+                    font-size: 0.8em;
+                    min-height: 32px;
+                    border-radius: 6px;
+                }
+
+                .number-cell small {
+                    font-size: 0.5em;
+                    bottom: 1px;
+                }
+
+                .header h1 {
+                    font-size: 1.6em;
+                }
+
+                .prize-image {
+                    width: 120px;
+                    height: 120px;
+                }
+
+                .stats {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .stat-item {
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                    padding-bottom: 10px;
+                }
+
+                .stat-item:last-child {
+                    border-bottom: none;
+                    padding-bottom: 0;
+                }
+
+                .modal-content {
+                    margin: 5% auto;
+                    padding: 15px;
+                    border-radius: 10px;
+                }
+
+                .form-group input {
+                    padding: 15px;
+                    font-size: 16px;
+                }
+            }
+
+            @media (max-width: 360px) {
+                .bingo-grid {
+                    grid-template-columns: repeat(5, 1fr);
+                    gap: 2px;
+                    padding: 6px;
+                }
+
+                .number-cell {
+                    font-size: 0.75em;
+                    min-height: 30px;
+                }
+
+                .header h1 {
+                    font-size: 1.4em;
+                }
+            }
+
+            /* Mejoras de accesibilidad y UX */
+            @media (hover: none) and (pointer: coarse) {
+                .number-cell:hover {
+                    transform: none;
+                }
+
+                .btn:hover,
+                .prob-btn:hover {
+                    transform: none;
+                }
+            }
+
+            /* Animaciones suaves */
+            .number-cell.just-added {
+                animation: cellAdded 0.5s ease-out;
+            }
+
+            @keyframes cellAdded {
+                0% {
+                    transform: scale(0.8);
+                    opacity: 0.5;
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            /* Estados de carga */
+            .loading {
+                opacity: 0.6;
+                pointer-events: none;
+            }
+
+            .loading::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 20px;
+                height: 20px;
+                margin: -10px 0 0 -10px;
+                border: 2px solid transparent;
+                border-top: 2px solid #3498db;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes slideIn {
+                0% {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes slideOut {
+                0% {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+
+            /* Estilos adicionales para mejor UX móvil */
+            .btn,
+            .prob-btn,
+            .number-cell {
+                -webkit-tap-highlight-color: transparent;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* Mejora para inputs en iOS */
+            input[type="text"],
+            input[type="tel"] {
+                -webkit-appearance: none;
+                -webkit-border-radius: 0;
+            }
+
+            /* Estilos para el estado loading del grid */
+            .bingo-grid.loading {
+                position: relative;
+            }
+
+            .bingo-grid.loading .number-cell {
+                opacity: 0.7;
+                pointer-events: none;
+            }
+
+            /* Pulse animation para el botón activo */
+            .prob-btn.active {
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7);
+                }
+                70% {
+                    box-shadow: 0 0 0 10px rgba(39, 174, 96, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(39, 174, 96, 0);
                 }
             }
         </style>
@@ -419,35 +844,83 @@
         </div>
 
         <!-- Modal para registro -->
-        <div id="registrationModal" class="modal">
+        <div
+            id="registrationModal"
+            class="modal"
+            role="dialog"
+            aria-labelledby="modal-title"
+            aria-hidden="true"
+        >
             <div class="modal-content">
-                <h3>
+                <h3 id="modal-title">
                     📝 Registro para el Número <span id="selectedNumber"></span>
                 </h3>
-                <form id="registrationForm">
+                <form id="registrationForm" novalidate>
                     <div class="form-group">
-                        <label for="participantName">Nombre Completo:</label>
-                        <input type="text" id="participantName" required />
+                        <label for="participantName">
+                            Nombre Completo:
+                            <span style="color: #e74c3c">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="participantName"
+                            required
+                            autocomplete="name"
+                            placeholder="Ingresa tu nombre completo"
+                            aria-describedby="name-error"
+                        />
+                        <div
+                            id="name-error"
+                            class="error-message"
+                            role="alert"
+                        ></div>
                     </div>
                     <div class="form-group">
-                        <label for="participantPhone">Número de Celular:</label>
-                        <input type="tel" id="participantPhone" required />
+                        <label for="participantPhone">
+                            Número de Celular:
+                            <span style="color: #e74c3c">*</span>
+                        </label>
+                        <input
+                            type="tel"
+                            id="participantPhone"
+                            required
+                            pattern="[0-9]{10}"
+                            autocomplete="tel"
+                            placeholder="1234567890 (10 dígitos)"
+                            aria-describedby="phone-error phone-help"
+                        />
+                        <div id="phone-help" class="input-help">
+                            Ingresa 10 dígitos sin espacios ni guiones
+                        </div>
+                        <div
+                            id="phone-error"
+                            class="error-message"
+                            role="alert"
+                        ></div>
                     </div>
                     <div class="form-group">
                         <label>Modalidad Seleccionada:</label>
-                        <p
+                        <div
                             id="selectedProbability"
-                            style="font-weight: bold; color: #3498db"
-                        ></p>
+                            style="
+                                font-weight: bold;
+                                color: #3498db;
+                                padding: 10px;
+                                background: #f8f9fa;
+                                border-radius: 5px;
+                                margin-top: 5px;
+                            "
+                        ></div>
                     </div>
-                    <div style="text-align: center">
-                        <button type="submit" class="btn">
+                    <div style="text-align: center; margin-top: 25px">
+                        <button type="submit" class="btn" id="submit-btn">
                             ✅ Confirmar Registro
                         </button>
                         <button
                             type="button"
                             class="btn btn-cancel"
                             onclick="closeModal()"
+                            aria-label="Cancelar registro y cerrar ventana"
                         >
                             ❌ Cancelar
                         </button>
@@ -465,9 +938,16 @@
             function saveParticipant(participant) {
                 if (!window.firebaseDB) {
                     console.warn("Firebase no disponible");
-                    alert("Error: No hay conexión a la base de datos.");
+                    showNotification(
+                        "Error: No hay conexión a la base de datos.",
+                        "error",
+                    );
                     return;
                 }
+
+                // Mostrar estado de carga
+                const grid = document.getElementById("bingoGrid");
+                grid.classList.add("loading");
 
                 console.log("Guardando participante:", participant);
                 const participantRef = window.firebaseRef(
@@ -478,11 +958,26 @@
                     .firebaseSet(participantRef, participant)
                     .then(() => {
                         console.log("Participante guardado exitosamente");
+                        grid.classList.remove("loading");
+
+                        // Agregar animación a la celda recién agregada
+                        const cell = document.querySelector(
+                            `[data-number="${participant.number}"]`,
+                        );
+                        if (cell) {
+                            cell.classList.add("just-added");
+                            setTimeout(
+                                () => cell.classList.remove("just-added"),
+                                500,
+                            );
+                        }
                     })
                     .catch((error) => {
                         console.error("Error guardando en Firebase:", error);
-                        alert(
+                        grid.classList.remove("loading");
+                        showNotification(
                             "Error al sincronizar los datos. Por favor intenta de nuevo.",
+                            "error",
                         );
                     });
             }
@@ -524,6 +1019,12 @@
                     if (cell) {
                         cell.className = "number-cell available";
                         cell.innerHTML = i;
+                        cell.setAttribute(
+                            "aria-label",
+                            `Número ${i}, disponible`,
+                        );
+                        cell.style.cursor = "pointer";
+                        cell.setAttribute("tabindex", "0");
                     }
                 }
 
@@ -535,12 +1036,72 @@
                     if (cell) {
                         cell.classList.remove("available");
                         cell.classList.add("taken");
-                        cell.innerHTML = `${participant.number}<br><small style="font-size: 0.7em">${participant.name}</small>`;
+                        cell.innerHTML = `${participant.number}<br><small>${participant.name}</small>`;
+                        cell.setAttribute(
+                            "aria-label",
+                            `Número ${participant.number}, ocupado por ${participant.name}`,
+                        );
+                        cell.style.cursor = "not-allowed";
+                        cell.setAttribute("tabindex", "-1");
                     }
                 });
 
                 updateParticipantsList();
                 updateStats();
+            }
+
+            // Funciones auxiliares para accesibilidad
+            function announceToScreenReader(message) {
+                const announcement = document.createElement("div");
+                announcement.setAttribute("aria-live", "polite");
+                announcement.setAttribute("aria-atomic", "true");
+                announcement.className = "sr-only";
+                announcement.textContent = message;
+                document.body.appendChild(announcement);
+                setTimeout(() => document.body.removeChild(announcement), 1000);
+            }
+
+            function showNotification(message, type = "info") {
+                // Crear notificación visual
+                const notification = document.createElement("div");
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === "error" ? "#e74c3c" : "#27ae60"};
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 5px;
+                    z-index: 10000;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    animation: slideIn 0.3s ease-out;
+                `;
+
+                document.body.appendChild(notification);
+                setTimeout(() => {
+                    notification.style.animation = "slideOut 0.3s ease-out";
+                    setTimeout(
+                        () => document.body.removeChild(notification),
+                        300,
+                    );
+                }, 3000);
+
+                // También anunciar a lectores de pantalla
+                announceToScreenReader(message);
+            }
+
+            function clearFormErrors() {
+                document.getElementById("name-error").textContent = "";
+                document.getElementById("phone-error").textContent = "";
+
+                // Limpiar clases de error/éxito
+                const nameInput = document.getElementById("participantName");
+                const phoneInput = document.getElementById("participantPhone");
+
+                nameInput.classList.remove("error", "success");
+                phoneInput.classList.remove("error", "success");
             }
 
             // Inicializar el bingo
@@ -553,7 +1114,16 @@
                     cell.className = "number-cell available";
                     cell.textContent = i;
                     cell.setAttribute("data-number", i);
+                    cell.setAttribute("role", "gridcell");
+                    cell.setAttribute("tabindex", "0");
+                    cell.setAttribute("aria-label", `Número ${i}, disponible`);
                     cell.onclick = () => selectNumber(i);
+                    cell.onkeydown = (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            selectNumber(i);
+                        }
+                    };
                     grid.appendChild(cell);
                 }
 
@@ -565,8 +1135,17 @@
                 currentProbability = prob;
                 document.querySelectorAll(".prob-btn").forEach((btn) => {
                     btn.classList.remove("active");
+                    btn.setAttribute("aria-pressed", "false");
                 });
                 event.target.classList.add("active");
+                event.target.setAttribute("aria-pressed", "true");
+
+                // Anunciar cambio para lectores de pantalla
+                const announcement =
+                    prob === "normal"
+                        ? "Modalidad Normal seleccionada: 1 oportunidad por número"
+                        : "Modalidad Premium seleccionada: 2 oportunidades por número";
+                announceToScreenReader(announcement);
             }
 
             function selectNumber(number) {
@@ -576,8 +1155,9 @@
 
                 // Verificar si ya está ocupado en el DOM
                 if (cell.classList.contains("taken")) {
-                    alert(
+                    showNotification(
                         "¡Este número ya está ocupado! Por favor selecciona otro.",
+                        "error",
                     );
                     return;
                 }
@@ -587,59 +1167,103 @@
                     (p) => p.number === number,
                 );
                 if (isNumberTaken) {
-                    alert(
+                    showNotification(
                         "¡Este número ya está ocupado! Por favor selecciona otro.",
+                        "error",
                     );
                     return;
                 }
 
                 selectedNumberForRegistration = number;
                 document.getElementById("selectedNumber").textContent = number;
-                document.getElementById("selectedProbability").textContent =
+                document.getElementById("selectedProbability").innerHTML =
                     currentProbability === "normal"
-                        ? "🎯 Probabilidad Normal (1 oportunidad)"
-                        : "⭐ Probabilidad Premium (2 oportunidades)";
+                        ? "🎯 <strong>Probabilidad Normal</strong><br><small>1 oportunidad por número</small>"
+                        : "⭐ <strong>Probabilidad Premium</strong><br><small>2 oportunidades por número</small>";
 
-                document.getElementById("registrationModal").style.display =
-                    "block";
+                const modal = document.getElementById("registrationModal");
+                modal.style.display = "block";
+                modal.setAttribute("aria-hidden", "false");
+
+                // Enfocar el primer input
+                setTimeout(() => {
+                    document.getElementById("participantName").focus();
+                }, 100);
             }
 
             function closeModal() {
-                document.getElementById("registrationModal").style.display =
-                    "none";
+                const modal = document.getElementById("registrationModal");
+                modal.style.display = "none";
+                modal.setAttribute("aria-hidden", "true");
                 document.getElementById("registrationForm").reset();
+                clearFormErrors();
                 selectedNumberForRegistration = null;
+
+                // Devolver foco al número que se había seleccionado
+                if (selectedNumberForRegistration) {
+                    const cell = document.querySelector(
+                        `[data-number="${selectedNumberForRegistration}"]`,
+                    );
+                    if (cell) cell.focus();
+                }
             }
 
             document.getElementById("registrationForm").onsubmit = function (
                 e,
             ) {
                 e.preventDefault();
+                clearFormErrors();
 
-                const name = document
-                    .getElementById("participantName")
-                    .value.trim();
-                const phone = document
-                    .getElementById("participantPhone")
-                    .value.trim();
+                const nameInput = document.getElementById("participantName");
+                const phoneInput = document.getElementById("participantPhone");
+                const name = nameInput.value.trim();
+                const phone = phoneInput.value.trim();
+                let hasErrors = false;
 
-                // Validaciones
+                // Validación del nombre
                 if (!name) {
-                    alert("Por favor ingresa tu nombre.");
-                    return;
-                }
-
-                if (!phone) {
-                    alert("Por favor ingresa tu teléfono.");
-                    return;
-                }
-
-                // Validar teléfono colombiano
-                const phoneRegex = /^[0-9]{10}$/;
-                if (!phoneRegex.test(phone)) {
-                    alert(
-                        "Por favor ingresa un número de celular válido (10 dígitos).",
+                    showFieldError(
+                        "name-error",
+                        "Por favor ingresa tu nombre.",
                     );
+                    nameInput.classList.add("error");
+                    hasErrors = true;
+                } else if (name.length < 2) {
+                    showFieldError(
+                        "name-error",
+                        "El nombre debe tener al menos 2 caracteres.",
+                    );
+                    nameInput.classList.add("error");
+                    hasErrors = true;
+                } else {
+                    nameInput.classList.remove("error");
+                    nameInput.classList.add("success");
+                }
+
+                // Validación del teléfono
+                if (!phone) {
+                    showFieldError(
+                        "phone-error",
+                        "Por favor ingresa tu teléfono.",
+                    );
+                    phoneInput.classList.add("error");
+                    hasErrors = true;
+                } else {
+                    const phoneRegex = /^[0-9]{10}$/;
+                    if (!phoneRegex.test(phone)) {
+                        showFieldError(
+                            "phone-error",
+                            "Ingresa un número válido de 10 dígitos.",
+                        );
+                        phoneInput.classList.add("error");
+                        hasErrors = true;
+                    } else {
+                        phoneInput.classList.remove("error");
+                        phoneInput.classList.add("success");
+                    }
+                }
+
+                if (hasErrors) {
                     return;
                 }
 
@@ -648,12 +1272,18 @@
                     (p) => p.number === selectedNumberForRegistration,
                 );
                 if (!isStillAvailable) {
-                    alert(
+                    showNotification(
                         "¡Lo siento! Este número acaba de ser seleccionado por otro usuario. Por favor selecciona otro número.",
+                        "error",
                     );
                     closeModal();
                     return;
                 }
+
+                // Deshabilitar botón durante el procesamiento
+                const submitBtn = document.getElementById("submit-btn");
+                submitBtn.disabled = true;
+                submitBtn.textContent = "⏳ Procesando...";
 
                 // Registrar participante
                 const participant = {
@@ -669,10 +1299,19 @@
 
                 closeModal();
 
-                alert(
+                // Rehabilitar botón
+                submitBtn.disabled = false;
+                submitBtn.textContent = "✅ Confirmar Registro";
+
+                showNotification(
                     `¡Registro exitoso! ${name}, has seleccionado el número ${selectedNumberForRegistration} con ${currentProbability === "normal" ? "1 oportunidad" : "2 oportunidades"}.`,
+                    "success",
                 );
             };
+
+            function showFieldError(elementId, message) {
+                document.getElementById(elementId).textContent = message;
+            }
 
             function updateParticipantsList() {
                 const list = document.getElementById("participantsList");
@@ -775,7 +1414,7 @@
                 <img src="cosmetiquera.png"
                      alt="Cosmetiquera de cuero"
                      class="prize-image"
-                     style="width: 400px; height: 250px; object-fit: cover; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); border: 3px solid #CD853F;">
+                     style="width: 250px; height: 250px; object-fit: cover; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); border: 3px solid #CD853F;">
             </div>
         `;
 

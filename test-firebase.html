@@ -265,12 +265,12 @@
 
                                 participants.forEach((participant, index) => {
                                     html += `
-                                    <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px;">
-                                        <strong>Número ${participant.number}</strong> - ${participant.name}<br>
-                                        📱 ${participant.phone} | ${participant.probability === "normal" ? "🎯 Normal" : "⭐ Premium"}<br>
-                                        <small>Registrado: ${participant.timestamp}</small>
-                                    </div>
-                                `;
+                                        <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                                            <strong>Número ${participant.number}</strong> - ${participant.name}<br>
+                                            📱 ${participant.phone}<br>
+                                            <small>Registrado: ${participant.timestamp}</small>
+                                        </div>
+                                    `;
                                 });
 
                                 html += "</div>";

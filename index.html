@@ -120,44 +120,10 @@
                 font-weight: bold;
             }
 
-            .probability-selector {
+            .reset-section {
                 text-align: center;
                 margin: 20px;
                 padding: 0 15px;
-            }
-
-            .probability-selector h3 {
-                margin-bottom: 15px;
-                color: #2c3e50;
-                font-size: 1.2em;
-            }
-
-            .prob-btn {
-                background: linear-gradient(45deg, #3498db, #2980b9);
-                color: white;
-                border: none;
-                padding: 12px 20px;
-                margin: 8px;
-                border-radius: 25px;
-                cursor: pointer;
-                font-size: 0.95em;
-                transition: all 0.3s ease;
-                display: inline-block;
-                min-height: 48px;
-                touch-action: manipulation;
-            }
-
-            .prob-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            }
-
-            .prob-btn:active {
-                transform: translateY(0);
-            }
-
-            .prob-btn.active {
-                background: linear-gradient(45deg, #27ae60, #16a085);
             }
 
             .bingo-grid {
@@ -384,18 +350,16 @@
             }
 
             .stats {
-                display: flex;
-                justify-content: space-around;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
                 background: linear-gradient(135deg, #2c3e50, #34495e);
                 color: white;
                 padding: 20px;
-                flex-wrap: wrap;
-                gap: 10px;
+                gap: 20px;
             }
 
             .stat-item {
                 text-align: center;
-                flex: 1;
                 min-width: 100px;
             }
 
@@ -476,15 +440,8 @@
                     margin: 15px 10px;
                 }
 
-                .prob-btn {
-                    display: block;
-                    width: 100%;
-                    margin: 10px 0;
-                    padding: 15px;
-                    font-size: 1em;
-                }
-
                 .stats {
+                    grid-template-columns: repeat(3, 1fr);
                     padding: 15px 10px;
                     gap: 15px;
                 }
@@ -545,13 +502,14 @@
                 }
 
                 .stats {
-                    flex-direction: column;
-                    gap: 10px;
+                    grid-template-columns: 1fr;
+                    gap: 15px;
+                    padding: 15px 10px;
                 }
 
                 .stat-item {
                     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-                    padding-bottom: 10px;
+                    padding-bottom: 15px;
                 }
 
                 .stat-item:last-child {
@@ -698,23 +656,6 @@
                 opacity: 0.7;
                 pointer-events: none;
             }
-
-            /* Pulse animation para el botón activo */
-            .prob-btn.active {
-                animation: pulse 2s infinite;
-            }
-
-            @keyframes pulse {
-                0% {
-                    box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7);
-                }
-                70% {
-                    box-shadow: 0 0 0 10px rgba(39, 174, 96, 0);
-                }
-                100% {
-                    box-shadow: 0 0 0 0 rgba(39, 174, 96, 0);
-                }
-            }
         </style>
     </head>
     <body>
@@ -794,21 +735,11 @@
                 Nocturno
             </div>
 
-            <div class="probability-selector">
-                <h3>Selecciona tu modalidad de juego:</h3>
-                <button
-                    class="prob-btn active"
-                    onclick="setProbability('normal')"
-                >
-                    🎯 Probabilidad Normal (1 oportunidad por número)
-                </button>
-                <button class="prob-btn" onclick="setProbability('premium')">
-                    ⭐ Probabilidad Premium (2 oportunidades por número)
-                </button>
+            <div class="reset-section">
                 <button
                     class="btn btn-cancel"
                     onclick="resetBingo()"
-                    style="margin-top: 10px; background-color: #e74c3c"
+                    style="background-color: #e74c3c"
                 >
                     🗑️ Resetear Bingo
                 </button>
@@ -825,7 +756,7 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" id="totalTickets">0</div>
-                    <div>Boletos Vendidos</div>
+                    <div>Números Vendidos</div>
                 </div>
             </div>
 
@@ -898,20 +829,7 @@
                             role="alert"
                         ></div>
                     </div>
-                    <div class="form-group">
-                        <label>Modalidad Seleccionada:</label>
-                        <div
-                            id="selectedProbability"
-                            style="
-                                font-weight: bold;
-                                color: #3498db;
-                                padding: 10px;
-                                background: #f8f9fa;
-                                border-radius: 5px;
-                                margin-top: 5px;
-                            "
-                        ></div>
-                    </div>
+
                     <div style="text-align: center; margin-top: 25px">
                         <button type="submit" class="btn" id="submit-btn">
                             ✅ Confirmar Registro
@@ -930,7 +848,6 @@
         </div>
 
         <script>
-            let currentProbability = "normal";
             let participants = [];
             let selectedNumberForRegistration = null;
 
@@ -1131,23 +1048,6 @@
                 loadParticipants();
             }
 
-            function setProbability(prob) {
-                currentProbability = prob;
-                document.querySelectorAll(".prob-btn").forEach((btn) => {
-                    btn.classList.remove("active");
-                    btn.setAttribute("aria-pressed", "false");
-                });
-                event.target.classList.add("active");
-                event.target.setAttribute("aria-pressed", "true");
-
-                // Anunciar cambio para lectores de pantalla
-                const announcement =
-                    prob === "normal"
-                        ? "Modalidad Normal seleccionada: 1 oportunidad por número"
-                        : "Modalidad Premium seleccionada: 2 oportunidades por número";
-                announceToScreenReader(announcement);
-            }
-
             function selectNumber(number) {
                 const cell = document.querySelector(
                     `[data-number="${number}"]`,
@@ -1176,10 +1076,6 @@
 
                 selectedNumberForRegistration = number;
                 document.getElementById("selectedNumber").textContent = number;
-                document.getElementById("selectedProbability").innerHTML =
-                    currentProbability === "normal"
-                        ? "🎯 <strong>Probabilidad Normal</strong><br><small>1 oportunidad por número</small>"
-                        : "⭐ <strong>Probabilidad Premium</strong><br><small>2 oportunidades por número</small>";
 
                 const modal = document.getElementById("registrationModal");
                 modal.style.display = "block";
@@ -1290,7 +1186,6 @@
                     number: selectedNumberForRegistration,
                     name: name,
                     phone: phone,
-                    probability: currentProbability,
                     timestamp: new Date().toLocaleString(),
                 };
 
@@ -1304,7 +1199,7 @@
                 submitBtn.textContent = "✅ Confirmar Registro";
 
                 showNotification(
-                    `¡Registro exitoso! ${name}, has seleccionado el número ${selectedNumberForRegistration} con ${currentProbability === "normal" ? "1 oportunidad" : "2 oportunidades"}.`,
+                    `¡Registro exitoso! ${name}, has seleccionado el número ${selectedNumberForRegistration}.`,
                     "success",
                 );
             };
@@ -1328,7 +1223,7 @@
                         (p) => `
                     <div class="participant-item">
                         <strong>Número ${p.number}</strong> - ${p.name}<br>
-                        📱 ${p.phone} | ${p.probability === "normal" ? "🎯 Normal" : "⭐ Premium"}<br>
+                        📱 ${p.phone}<br>
                         <small>Registrado: ${p.timestamp}</small>
                     </div>
                 `,
@@ -1338,10 +1233,7 @@
 
             function updateStats() {
                 const available = 50 - participants.length;
-                const totalTickets = participants.reduce(
-                    (sum, p) => sum + (p.probability === "premium" ? 2 : 1),
-                    0,
-                );
+                const totalTickets = participants.length; // Números vendidos = participantes
 
                 document.getElementById("availableNumbers").textContent =
                     available;

@@ -5,7 +5,7 @@
         ".read": true,
         ".write": true,
         "$number": {
-          ".validate": "newData.hasChildren(['number', 'name', 'phone', 'probability', 'timestamp'])",
+          ".validate": "newData.hasChildren(['number', 'name', 'phone', 'timestamp'])",
           "number": {
             ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 50"
           },
@@ -14,9 +14,6 @@
           },
           "phone": {
             ".validate": "newData.isString() && newData.val().matches(/^[0-9]{10}$/)"
-          },
-          "probability": {
-            ".validate": "newData.isString() && (newData.val() === 'normal' || newData.val() === 'premium')"
           },
           "timestamp": {
             ".validate": "newData.isString() && newData.val().length > 0"

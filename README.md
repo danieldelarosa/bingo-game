@@ -6,7 +6,7 @@ Un juego de bingo interactivo desarrollado en HTML, CSS y JavaScript puro con si
 
 - 🎯 **Tablero de bingo interactivo** con números del 1 al 50
 - 🔥 **Sincronización en tiempo real** con Firebase - todos los usuarios ven los mismos números ocupados
-- 🎲 **Sistema de probabilidades** ajustables (Normal/Premium)
+- 🎫 **Sistema de boletos único** - un solo tipo de boleto para todos los participantes
 - 👥 **Registro de participantes** compartido entre todos los usuarios
 - 📊 **Estadísticas en tiempo real** sincronizadas
 - 📱 **Diseño totalmente responsive** optimizado para móviles, tablets y desktop
@@ -36,11 +36,10 @@ Un juego de bingo interactivo desarrollado en HTML, CSS y JavaScript puro con si
 
 ## Cómo jugar
 
-1. Selecciona la modalidad de juego (Normal o Premium)
-2. Haz clic en un número disponible del tablero
-3. Registra tus datos (nombre y teléfono)
-4. ¡Tu número queda reservado y sincronizado con todos los demás usuarios!
-5. ¡Espera a ver si ganas el premio!
+1. Haz clic en un número disponible del tablero
+2. Registra tus datos (nombre y teléfono)
+3. ¡Tu número queda reservado y sincronizado con todos los demás usuarios!
+4. ¡Espera a ver si ganas el premio!
 
 ## Premio
 
@@ -168,6 +167,7 @@ bingo-game/
 - **Error handling**: Manejo elegante de errores con recuperación automática
 - **Success notifications**: Confirmaciones no intrusivas
 - **Form validation**: Validación en tiempo real con indicadores visuales
+- **Sistema simplificado**: Un solo tipo de boleto elimina confusión
 
 ## Personalización
 
@@ -176,8 +176,8 @@ Puedes personalizar fácilmente:
 - Imágenes de los premios
 - Texto y descripciones
 - Rangos de números (actualmente 1-50)
-- Modalidades de probabilidad
 - Estructura de datos en Firebase
+- Precio del boleto
 
 ## 🚨 Notas importantes
 
@@ -204,9 +204,10 @@ Puedes personalizar fácilmente:
 ¡Las contribuciones son bienvenidas! Áreas donde puedes ayudar:
 
 - **Nuevas características**: Sistema de chat, múltiples bingos, temas personalizados
-- **Mejoras de UX**: Nuevas animaciones, sonidos, notificaciones push
+- **Mejoras de UX**: Nuevas animaciones, sonidos, notificaciones push  
 - **Optimizaciones**: Performance, accesibilidad, SEO
 - **Testing**: Pruebas automáticas, testing en dispositivos
+- **Simplificación**: Hacer el sistema aún más fácil de usar
 
 ### Proceso de contribución:
 1. Fork del repositorio
@@ -222,12 +223,12 @@ Este proyecto está bajo la **Licencia MIT**. Siéntete libre de usarlo y modifi
 ## 🎯 Roadmap futuro
 
 - [ ] **PWA completa**: Instalación, notificaciones push, offline mode
-- [ ] **Multi-idioma**: Soporte para español, inglés, portugués
+- [ ] **Multi-idioma**: Soporte para español, inglés, portugués  
 - [ ] **Temas**: Modo oscuro, temas navideños, personalizables
 - [ ] **Estadísticas avanzadas**: Dashboard admin, analytics en tiempo real
-- [ ] **Gamificación**: Sistema de puntos, logros, rankings
+- [ ] **Sistema de sorteo**: Automatización del sorteo ganador
 - [ ] **API REST**: Para integraciones con otros sistemas
-- [ ] **WebRTC**: Chat de voz/video entre participantes
+- [ ] **Exportar datos**: CSV/Excel de participantes
 
 ---
 

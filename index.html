@@ -4,6 +4,43 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Bingo Interactivo - Premio Morral con Cosmetiquera</title>
+        <!-- Firebase SDK -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+            import {
+                getDatabase,
+                ref,
+                set,
+                get,
+                onValue,
+                remove,
+            } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyCUvPrvvilavqv-JMWPDFFvxBU3uuGQX84",
+                authDomain: "bingo-game-ab117.firebaseapp.com",
+                databaseURL:
+                    "https://bingo-game-ab117-default-rtdb.firebaseio.com",
+                projectId: "bingo-game-ab117",
+                storageBucket: "bingo-game-ab117.firebasestorage.app",
+                messagingSenderId: "866584904558",
+                appId: "1:866584904558:web:7241bfced821a92f43377f",
+            };
+
+            // Inicializar Firebase
+            const app = initializeApp(firebaseConfig);
+            const database = getDatabase(app);
+
+            // Hacer las funciones disponibles globalmente
+            window.firebaseDB = database;
+            window.firebaseRef = ref;
+            window.firebaseSet = set;
+            window.firebaseGet = get;
+            window.firebaseOnValue = onValue;
+            window.firebaseRemove = remove;
+        </script>
+
         <style>
             * {
                 margin: 0;
@@ -335,6 +372,13 @@
                 <button class="prob-btn" onclick="setProbability('premium')">
                     ⭐ Probabilidad Premium (2 oportunidades por número)
                 </button>
+                <button
+                    class="btn btn-cancel"
+                    onclick="resetBingo()"
+                    style="margin-top: 10px; background-color: #e74c3c"
+                >
+                    🗑️ Resetear Bingo
+                </button>
             </div>
 
             <div class="stats">
@@ -409,6 +453,64 @@
             let participants = [];
             let selectedNumberForRegistration = null;
 
+            // Funciones para manejo de Firebase
+            function saveParticipants() {
+                const participantsRef = window.firebaseRef(
+                    window.firebaseDB,
+                    "bingo/participants",
+                );
+                window
+                    .firebaseSet(participantsRef, participants)
+                    .catch((error) => {
+                        console.error("Error guardando en Firebase:", error);
+                        alert(
+                            "Error al sincronizar los datos. Por favor intenta de nuevo.",
+                        );
+                    });
+            }
+
+            function loadParticipants() {
+                const participantsRef = window.firebaseRef(
+                    window.firebaseDB,
+                    "bingo/participants",
+                );
+
+                // Escuchar cambios en tiempo real
+                window.firebaseOnValue(participantsRef, (snapshot) => {
+                    const data = snapshot.val();
+                    participants = data ? data : [];
+                    updateUI();
+                });
+            }
+
+            function updateUI() {
+                const grid = document.getElementById("bingoGrid");
+
+                // Limpiar grid
+                for (let i = 1; i <= 50; i++) {
+                    const cell = document.querySelector(`[data-number="${i}"]`);
+                    if (cell) {
+                        cell.className = "number-cell available";
+                        cell.innerHTML = i;
+                    }
+                }
+
+                // Restaurar números ocupados
+                participants.forEach((participant) => {
+                    const cell = document.querySelector(
+                        `[data-number="${participant.number}"]`,
+                    );
+                    if (cell) {
+                        cell.classList.remove("available");
+                        cell.classList.add("taken");
+                        cell.innerHTML = `${participant.number}<br><small style="font-size: 0.7em">${participant.name}</small>`;
+                    }
+                });
+
+                updateParticipantsList();
+                updateStats();
+            }
+
             // Inicializar el bingo
             function initBingo() {
                 const grid = document.getElementById("bingoGrid");
@@ -422,7 +524,9 @@
                     cell.onclick = () => selectNumber(i);
                     grid.appendChild(cell);
                 }
-                updateStats();
+
+                // Cargar y escuchar participantes de Firebase
+                loadParticipants();
             }
 
             function setProbability(prob) {
@@ -489,6 +593,9 @@
 
                 participants.push(participant);
 
+                // Guardar en Firebase
+                saveParticipants();
+
                 // Marcar número como ocupado
                 const cell = document.querySelector(
                     `[data-number="${selectedNumberForRegistration}"]`,
@@ -542,6 +649,33 @@
                     participants.length;
                 document.getElementById("totalTickets").textContent =
                     totalTickets;
+            }
+
+            function resetBingo() {
+                if (
+                    confirm(
+                        "¿Estás seguro de que quieres resetear el bingo? Se perderán todos los participantes registrados para TODOS los usuarios.",
+                    )
+                ) {
+                    participants = [];
+                    const participantsRef = window.firebaseRef(
+                        window.firebaseDB,
+                        "bingo/participants",
+                    );
+                    window
+                        .firebaseRemove(participantsRef)
+                        .then(() => {
+                            alert(
+                                "¡Bingo reseteado exitosamente para todos los usuarios!",
+                            );
+                        })
+                        .catch((error) => {
+                            console.error("Error reseteando Firebase:", error);
+                            alert(
+                                "Error al resetear el bingo. Por favor intenta de nuevo.",
+                            );
+                        });
+                }
             }
 
             // Cerrar modal al hacer clic fuera de él

@@ -1,31 +1,60 @@
 # Bingo Interactivo - Premio Morral con Cosmetiquera
 
-Un juego de bingo interactivo desarrollado en HTML, CSS y JavaScript puro. Los participantes pueden seleccionar números del 1 al 50 con diferentes probabilidades de ganar un premio especial.
+Un juego de bingo interactivo desarrollado en HTML, CSS y JavaScript puro con sincronización en tiempo real usando Firebase. Los participantes pueden seleccionar números del 1 al 50 con diferentes probabilidades de ganar un premio especial.
 
 ## Características
 
 - 🎯 Tablero de bingo interactivo con números del 1 al 50
-- 🎲 Sistema de probabilidades ajustables (1/10, 1/25, 1/50)
-- 👥 Registro de participantes por número
-- 📊 Estadísticas en tiempo real
+- 🔥 **Sincronización en tiempo real** con Firebase - todos los usuarios ven los mismos números ocupados
+- 🎲 Sistema de probabilidades ajustables (Normal/Premium)
+- 👥 Registro de participantes por número compartido entre todos los usuarios
+- 📊 Estadísticas en tiempo real sincronizadas
 - 📱 Diseño responsivo para móviles y desktop
 - 🎨 Interfaz moderna con gradientes y animaciones
+- 🔄 Persistencia de datos - los números seleccionados se mantienen al recargar
 
 ## Cómo jugar
 
-1. Selecciona la probabilidad de ganar deseada
+1. Selecciona la modalidad de juego (Normal o Premium)
 2. Haz clic en un número disponible del tablero
-3. Registra tus datos (nombre, cédula, teléfono)
-4. ¡Espera a ver si ganas el premio!
+3. Registra tus datos (nombre y teléfono)
+4. ¡Tu número queda reservado y sincronizado con todos los demás usuarios!
+5. ¡Espera a ver si ganas el premio!
 
 ## Premio
 
 - 🎒 Morral exclusivo
 - 💄 Cosmetiquera con productos de belleza
 
+## 🔧 Configuración de Firebase
+
+**IMPORTANTE**: Este juego utiliza Firebase Realtime Database para sincronización en tiempo real entre usuarios.
+
+### Paso 1: Configurar Firebase
+
+1. Ve a [Firebase Console](https://console.firebase.google.com/)
+2. Crea un nuevo proyecto llamado (ej: `bingo-game`)
+3. Activa **Realtime Database** en modo de prueba
+4. Obtén tu configuración de Firebase
+5. Reemplaza la configuración en `index.html`:
+
+```javascript
+const firebaseConfig = {
+    apiKey: "tu-api-key-aqui",
+    authDomain: "tu-proyecto.firebaseapp.com",
+    databaseURL: "https://tu-proyecto-default-rtdb.firebaseio.com/",
+    projectId: "tu-proyecto",
+    storageBucket: "tu-proyecto.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "tu-app-id"
+};
+```
+
+📋 **Ver guía detallada**: [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
+
 ## Despliegue en GitHub Pages
 
-### Paso 1: Subir el código a GitHub
+### Paso 2: Subir el código a GitHub
 
 1. Crea un nuevo repositorio en GitHub
 2. Clona el repositorio localmente:
@@ -40,7 +69,7 @@ Un juego de bingo interactivo desarrollado en HTML, CSS y JavaScript puro. Los p
    git push origin main
    ```
 
-### Paso 2: Configurar GitHub Pages
+### Paso 3: Configurar GitHub Pages
 
 1. Ve a tu repositorio en GitHub
 2. Haz clic en **Settings** (Configuración)
@@ -50,7 +79,7 @@ Un juego de bingo interactivo desarrollado en HTML, CSS y JavaScript puro. Los p
 6. En **Folder** deja **/ (root)**
 7. Haz clic en **Save**
 
-### Paso 3: Acceder al sitio
+### Paso 4: Acceder al sitio
 
 Después de unos minutos, tu juego estará disponible en:
 ```
@@ -60,19 +89,30 @@ https://tu-usuario.github.io/nombre-del-repo/
 ## Estructura del proyecto
 
 ```
-bingo/
-├── index.html          # Archivo principal del juego
-├── cosmetiquera.png    # Imagen del premio cosmetiquera
-├── morral.png         # Imagen del premio morral
-└── README.md          # Este archivo
+bingo-game/
+├── index.html                 # Archivo principal del juego con Firebase
+├── cosmetiquera.png          # Imagen del premio cosmetiquera
+├── morral.png               # Imagen del premio morral
+├── FIREBASE_SETUP.md        # Guía detallada de configuración Firebase
+├── firebase-config-example.js # Ejemplo de configuración
+├── .gitignore               # Archivos a ignorar por Git
+└── README.md               # Este archivo
 ```
 
 ## Tecnologías utilizadas
 
-- HTML5
-- CSS3 (con gradientes y animaciones)
-- JavaScript (ES6+)
-- Diseño responsivo
+- **HTML5**
+- **CSS3** (con gradientes y animaciones)
+- **JavaScript (ES6+)** con módulos
+- **Firebase Realtime Database** para sincronización en tiempo real
+- **Diseño responsivo**
+
+## ✨ Características de sincronización
+
+- **Tiempo real**: Los cambios se reflejan instantáneamente en todos los dispositivos
+- **Multi-usuario**: Múltiples personas pueden usar el bingo simultáneamente
+- **Persistencia**: Los datos se mantienen incluso si se cierra el navegador
+- **Sin conflictos**: Un número solo puede ser seleccionado por una persona
 
 ## Personalización
 
@@ -81,7 +121,15 @@ Puedes personalizar fácilmente:
 - Imágenes de los premios
 - Texto y descripciones
 - Rangos de números (actualmente 1-50)
-- Probabilidades disponibles
+- Modalidades de probabilidad
+- Estructura de datos en Firebase
+
+## 🚨 Notas importantes
+
+- **Firebase Gratuito**: El plan gratuito de Firebase es suficiente para uso normal
+- **Seguridad**: En producción, configura reglas de seguridad apropiadas en Firebase
+- **Backups**: Firebase maneja automáticamente la redundancia de datos
+- **Límites**: Firebase tiene límites de uso en el plan gratuito (1GB almacenamiento, 10GB transferencia/mes)
 
 ## Contribuir
 
